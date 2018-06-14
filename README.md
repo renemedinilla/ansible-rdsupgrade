@@ -17,6 +17,8 @@ Besides the modules requirements, there are certain modules that doesn't work qu
 ## Setting up and Running the project
 Each role can run independently, so each one has their own configurations and defaults, wich can be found in `roles/<roleName>/defaults/main.yml`. ALL of the roles defaults can be overwritten by updating the `group_vars/all/vars.yml` file.
 
+**WARNING**: Change the RDS Instance password (`mySqlPass`) and do not commit it!
+
 Set following environment variables:
 ```
 AWS_ACCESS_KEY_ID=<your-aws-access-key-id>
