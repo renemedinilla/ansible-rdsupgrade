@@ -6,12 +6,13 @@ This exerecise consists in the following:
 - Collect the facts about newly started node and save them in ./facts directory
 ## Requirements
 ### Ansible
-This exercise was created using **Ansible 2.5** on Ubuntu 16.04. In order to get ansible working on your local machine follow this [steps](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#latest-releases-via-apt-ubuntu).
+This exercise was created using **Ansible 2.5** on Ubuntu 16.04. In order to get ansible working on your local machine follow these [steps](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#latest-releases-via-apt-ubuntu).
 
-### Ansible modules:
+The ansible modules require:
 - boto
 - python >= 2.6
-- aws cli
+
+Besides the modules requirements, there are certain modules that doesn't work quite well, like the `rds: modify` command to upgrade to a major version. So in this case we use the module `command` to execute commands, so make sure to have the `AWS CLI` installed as well.
 
 ## Setting up and Running the project
 Each role can run independently, so each one has their own configurations and defaults, wich can be found in `roles/<roleName>/defaults/main.yml`. ALL of the roles defaults can be overwritten by updating the `group_vars/all/vars.yml` file.
