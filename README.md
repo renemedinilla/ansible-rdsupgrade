@@ -14,21 +14,31 @@ This exercise was created using **Ansible 2.5** on Ubuntu 16.04. In order to get
 - aws cli
 
 ## Setting up and Running the project
-Each role can run independently, so each one has their own configurations, wich can be found in `roles/<roleName>/defaults/main.yml`. Configure each one accordingly with your specific 
+Each role can run independently, so each one has their own configurations and defaults, wich can be found in `roles/<roleName>/defaults/main.yml`. ALL of the roles defaults can be overwritten by updating the `group_vars/all/vars.yml` file.
 
-Set environment variables:
-AWS_ACCESS_KEY_ID
-//AWS_SECRET_KEY
-AWS_SECRET_ACCESS_KEY
-AWS_REGION >= 1.15
-parameters like your aws keys.
+Set following environment variables:
+```
+AWS_ACCESS_KEY_ID=<your-aws-access-key-id>
+AWS_SECRET_ACCESS_KEY=<your-aws-secret-access-key>
+AWS_REGION=<your-prefered-aws-region>
+```
+
+Run the initial deployment (creates a MySQL RDS instance with 5.5 engine):
+```
+ansible-playbook deploy.yml
+```
+Once the instance is created you can create the new instance by running:
 ```
 ansible-playbook upgradeRds.yml
 ```
 
+Which will create an RDS read replica with the master version (5.5) and then upgrade it to the next major version (5.6)
+
+Once everything is completed a new file will be created in `facts/rds_out.json` with the properties of the new updated replica instance.
+
 ## Roles
 This project consists in various roles, each one with it's own responsibility.
 ### deployRds
-Initiates the RDS MySQL instance creation with a read reaplica in another AZ.
-### upgradeReplica
-Initiates the RdS replica upgrade process and finishes when the replicacion has succeeded.
+Creates the MySQL RDS master instance, using the `sourceInstanceName` default or variable.
+### createUpgradedReplica
+Initiates the RDS MySQL replica creation using the `replicaInstanceName` default or variable. After creation it will upgrade the engine version and save the file to the `facts` directory.
