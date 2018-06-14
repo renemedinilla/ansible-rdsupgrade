@@ -9,15 +9,9 @@
     wait_timeout: 600
   register: rds_replica
 
-- debug:
-    var: rds_replica
-
 - name: Upgrade version using command line
   command: "aws rds modify-db-instance --db-instance-identifier {{ sourceInstanceName }}-{{ replicaInstanceName }} --engine-version 5.6 --allow-major-version-upgrade --apply-immediately"
   register: aws_cli_out
-
-- debug:
-    var: aws_cli_out
 
 - name: Wait for 10 seconds for status refresh
   wait_for: timeout=10
@@ -26,14 +20,17 @@
   command: aws rds wait db-instance-available --db-instance-identifier {{ sourceInstanceName }}-{{ replicaInstanceName }}
   register: aws_wait_out
 
-- debug:
-    var: aws_wait_out
-
 - name: Gather facts for the new instance
   rds:
     command: facts
     instance_name: "{{ sourceInstanceName }}-{{ replicaInstanceName }}"
   register: rds_facts
 
-- debug:
-    var: rds_facts
+- file:
+    state: directory
+    path: facts
+
+- name: Save Results to file
+  copy:
+    dest: "facts/rds_out.json"
+    content: "{{ rds_facts }}"
