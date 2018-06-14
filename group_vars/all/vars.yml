@@ -1,0 +1,3 @@
+sourceInstanceName: rdsmysql-rds
+replicaInstanceName: replica1
+mySqlPass: 1nSecure

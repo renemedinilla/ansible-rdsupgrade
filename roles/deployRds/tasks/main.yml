@@ -1,0 +1,17 @@
+---
+- name: MySql Rds creation
+  rds:
+    command: create
+    instance_name: "{{ sourceInstanceName }}"
+    db_engine: MySQL
+    engine_version: 5.5
+    size: 20
+    instance_type: db.t2.micro
+    username: mysql_admin
+    password: "{{ mySqlPass }}"
+    multi_zone: yes
+    wait: yes
+    wait_timeout: 1200
+    tags:
+      Environment: testing
+  register: rds_facts
